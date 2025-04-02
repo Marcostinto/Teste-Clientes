@@ -2,61 +2,78 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Contatos</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f5f5f5;
-        }
-        h1 {
-            color: #2c3e50;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            background-color: white;
-        }
-        th, td {
-            padding: 10px;
-            border: 1px solid #ccc;
-        }
-        th {
-            background-color: #3498db;
-            color: white;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sistema de Contatos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      padding: 20px;
+    }
+    h1 {
+      color: #2c3e50;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 12px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: #3498db;
+      color: white;
+    }
+    .status {
+      padding: 4px 8px;
+      border-radius: 4px;
+      color: white;
+      font-size: 12px;
+    }
+    .atendeu { background-color: #2ecc71; }
+    .nao-atendeu { background-color: #e74c3c; }
+    .retornara { background-color: #f39c12; }
+  </style>
 </head>
 <body>
-    <h1>Sistema de Contatos</h1>
-    <p>Exemplo básico com HTML, CSS e JavaScript embutidos.</p>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Endereço</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody id="tabela-contatos">
-        </tbody>
-    </table>
-    <script>
-        const contatos = [
-            { id: 1, nome: "João Silva", endereco: "Rua A, 123", status: "Atendeu" },
-            { id: 2, nome: "Maria Oliveira", endereco: "Rua B, 456", status: "Não Atendeu" },
-            { id: 3, nome: "Carlos Souza", endereco: "Rua C, 789", status: "Retornará" }
-        ];
-        const tbody = document.getElementById("tabela-contatos");
-        contatos.forEach(c => {
-            const row = document.createElement("tr");
-            row.innerHTML = `<td>${c.id}</td><td>${c.nome}</td><td>${c.endereco}</td><td>${c.status}</td>`;
-            tbody.appendChild(row);
-        });
-    </script>
+  <h1>Sistema de Gerenciamento de Contatos</h1>
+  <p>Lista com status e controle básico</p>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Endereço</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="contatos-tabela">
+    </tbody>
+  </table>
+  <script>
+    const contatos = [
+      { id: 1, nome: "João da Silva", endereco: "Rua A, 100", status: "atendeu" },
+      { id: 2, nome: "Maria Souza", endereco: "Rua B, 200", status: "nao-atendeu" },
+      { id: 3, nome: "Carlos Lima", endereco: "Rua C, 300", status: "retornara" }
+    ];
+
+    const tabela = document.getElementById("contatos-tabela");
+
+    contatos.forEach(contato => {
+      const linha = document.createElement("tr");
+      linha.innerHTML = `
+        <td>${contato.id}</td>
+        <td>${contato.nome}</td>
+        <td>${contato.endereco}</td>
+        <td><span class="status ${contato.status}">${contato.status.replace('-', ' ')}</span></td>
+      `;
+      tabela.appendChild(linha);
+    });
+  </script>
 </body>
 </html>
