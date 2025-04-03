@@ -4,45 +4,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sistema de Contatos</title>
+  <title>Sistema de Contatos (com LocalStorage)</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f2f2f2;
-      padding: 20px;
-    }
-    h1 {
-      color: #2c3e50;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: white;
-      margin-top: 20px;
-    }
-    th, td {
-      padding: 12px;
-      border: 1px solid #ddd;
-      text-align: left;
-    }
-    th {
-      background-color: #3498db;
-      color: white;
-    }
-    .status {
-      padding: 4px 8px;
-      border-radius: 4px;
-      color: white;
-      font-size: 12px;
-    }
+    body { font-family: Arial, sans-serif; background: #f2f2f2; padding: 20px; }
+    h1 { color: #2c3e50; }
+    table { width: 100%; border-collapse: collapse; background: white; margin-top: 20px; }
+    th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
+    th { background-color: #3498db; color: white; }
+    .status { padding: 4px 8px; border-radius: 4px; color: white; font-size: 12px; }
     .atendeu { background-color: #2ecc71; }
     .nao-atendeu { background-color: #e74c3c; }
     .retornara { background-color: #f39c12; }
+    .btn { padding: 6px 10px; border: none; background: #0984e3; color: white; border-radius: 4px; cursor: pointer; }
+    .btn:hover { background: #74b9ff; }
   </style>
 </head>
 <body>
-  <h1>Sistema de Gerenciamento de Contatos</h1>
-  <p>Lista com status e controle básico</p>
+  <h1>Sistema de Contatos (com LocalStorage)</h1>
+  <p>Agora os dados são salvos no navegador e permanecem entre sessões.</p>
+  <button class="btn" onclick="adicionarContato()">Adicionar Contato</button>
   <table>
     <thead>
       <tr>
@@ -52,28 +32,51 @@
         <th>Status</th>
       </tr>
     </thead>
-    <tbody id="contatos-tabela">
+    <tbody id="tabela-contatos">
     </tbody>
   </table>
+
   <script>
-    const contatos = [
-      { id: 1, nome: "João da Silva", endereco: "Rua A, 100", status: "atendeu" },
-      { id: 2, nome: "Maria Souza", endereco: "Rua B, 200", status: "nao-atendeu" },
-      { id: 3, nome: "Carlos Lima", endereco: "Rua C, 300", status: "retornara" }
-    ];
+    const tabela = document.getElementById("tabela-contatos");
 
-    const tabela = document.getElementById("contatos-tabela");
+    function obterContatos() {
+      const dados = localStorage.getItem("contatos");
+      return dados ? JSON.parse(dados) : [];
+    }
 
-    contatos.forEach(contato => {
-      const linha = document.createElement("tr");
-      linha.innerHTML = `
-        <td>${contato.id}</td>
-        <td>${contato.nome}</td>
-        <td>${contato.endereco}</td>
-        <td><span class="status ${contato.status}">${contato.status.replace('-', ' ')}</span></td>
-      `;
-      tabela.appendChild(linha);
-    });
+    function salvarContatos(contatos) {
+      localStorage.setItem("contatos", JSON.stringify(contatos));
+    }
+
+    function renderizarTabela() {
+      tabela.innerHTML = "";
+      const contatos = obterContatos();
+      contatos.forEach(contato => {
+        const linha = document.createElement("tr");
+        linha.innerHTML = `
+          <td>${contato.id}</td>
+          <td>${contato.nome}</td>
+          <td>${contato.endereco}</td>
+          <td><span class="status ${contato.status}">${contato.status.replace("-", " ")}</span></td>
+        `;
+        tabela.appendChild(linha);
+      });
+    }
+
+    function adicionarContato() {
+      const contatos = obterContatos();
+      const novo = {
+        id: contatos.length + 1,
+        nome: prompt("Nome do contato:") || "Desconhecido",
+        endereco: prompt("Endereço:") || "Não informado",
+        status: prompt("Status (atendeu, nao-atendeu, retornara):") || "nao-atendeu"
+      };
+      contatos.push(novo);
+      salvarContatos(contatos);
+      renderizarTabela();
+    }
+
+    renderizarTabela();
   </script>
 </body>
 </html>
